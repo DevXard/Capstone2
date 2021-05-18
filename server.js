@@ -1,4 +1,6 @@
 
+const PORT = require('./config')
+
 const app = require('./app');
 
 app.listen(3000, () => {
