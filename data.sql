@@ -43,6 +43,7 @@ CREATE TABLE orders (
 
 CREATE TABLE item(
     id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users ON DELETE CASCADE,
     type TEXT,
     name TEXT,
     waigth FLOAT,
