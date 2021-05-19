@@ -2,13 +2,18 @@ require('dotenv');
 
 const PORT = +process.env.PORT || 3000;
 
+const SECRET_KEY = process.env.SECRET_KEY || 'development-secret-key';
+
 const DB_URI =
     process.env.NODE_ENV === 'test'
-    ? 'postgres://farm-fresh-test'
-    : 'postgres://farm-fresh'
+    ? 'postgres://farm_fresh_test'
+    : 'postgres://farm_fresh'
 
+const BCRYPT_WORK_FACTOR = 12;
 
 module.exports = {
     DB_URI,
-    PORT
+    PORT,
+    BCRYPT_WORK_FACTOR,
+    SECRET_KEY
 }

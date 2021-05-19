@@ -8,12 +8,12 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(150) UNIQUE NOT NULL,
     name VARCHAR(150) NOT NULL,
-    password VARCHAR(20) NOT NULL,
+    password TEXT NOT NULL,
     email VARCHAR(150) NOT NULL,
     default_address VARCHAR(250) NOT NULL,
     phone VARCHAR(20) NOT NULL,
-    seller BOOLEAN,
-    date TIMESTAMP NOT NULL
+    seller BOOLEAN DEFAULT FALSE,
+    date DATE DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE rating_comments(
