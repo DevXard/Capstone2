@@ -5,6 +5,10 @@ const { BCRYPT_WORK_FACTOR } = require('../config');
 
 class User {
 
+    // Register new user
+    // Check if user exsists
+        // if exsists throw error
+        // else insert new user in to database
     static async register(username, password, name, email, address, phone){
         
         const checkDuplicate = await db.query(
@@ -28,6 +32,27 @@ class User {
             RETURNING *`, [username, hashedPassword, name, email, address, phone]
         )
         return result.rows[0]
+    }
+
+    //Authenticate user
+        // select user by username 
+        // compare password using bcrypt
+    static async authenticate(username, password) {
+
+        const result = await db.query(
+            `SELECT * 
+            FROM users
+            WHERE username = $1`,
+            [username]
+        )
+
+        const user = result.rows[0];
+        
+        if(user && (await bcrypt.compare(password, user.password))){
+            return user
+        }else{
+            throw new ExpressError("Cannot authentificate", 401)
+        }
     }
 }
 
