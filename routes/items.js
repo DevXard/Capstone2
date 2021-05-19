@@ -43,11 +43,26 @@ router.get('/', async (req, res, next) => {
 
 */
 
-router.patch('/update/:username', async (req, res, next) => {
+router.patch('/update/:id', async (req, res, next) => {
+    
     try {
+        const {username, type, name, waigth, price, details} = req.body;
+        const id = req.params.id;
+
+        const user = await User.getUser(username)
+        const itemToUpdate = await Item.getItemById(id)
+
+        if(user.id === itemToUpdate.user_id){
+            
+            const item = Item.updateItem(id, type, name, waigth, price, details)
+
+            return res.status(200).json({msg: "Item updated successfully"})
+        }else{
+            throw new ExpressError("Item does not belong to user", 404)
+        }
 
     }catch(err){
-
+        return next(err)
     }
 })
 

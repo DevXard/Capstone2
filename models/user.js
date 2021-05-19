@@ -54,6 +54,17 @@ class User {
             throw new ExpressError("Cannot authentificate", 401)
         }
     }
+
+    static async getUser(username){
+
+        const result = await db.query(
+            `SELECT * 
+            FROM users
+            WHERE username = $1`,
+            [username]
+        )
+        return result.rows[0]
+    }
 }
 
 module.exports = User;
