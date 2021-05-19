@@ -71,6 +71,22 @@ class Item {
 
         return result.rows[0]
     }
+
+    static async delete(id){
+
+        const result = await db.query(
+            `DELETE FROM users
+            WHERE id = $1
+            RETURNING *`,
+            [id]
+        )
+
+        const item = result.rows[0]
+            
+        if(!item) {
+            throw new ExpressError("Item does not Exsist", 404)
+        }
+    }
 } 
 
 module.exports = Item;

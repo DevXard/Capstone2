@@ -54,12 +54,24 @@ router.patch('/update/:id', async (req, res, next) => {
 
         if(user.id === itemToUpdate.user_id){
             
-            const item = Item.updateItem(id, type, name, waigth, price, details)
+            const item = await Item.updateItem(id, type, name, waigth, price, details)
 
-            return res.status(200).json({msg: "Item updated successfully"})
+            return res.status(200).json({msg: "Item updated successfully", item})
         }else{
             throw new ExpressError("Item does not belong to user", 404)
         }
+
+    }catch(err){
+        return next(err)
+    }
+})
+
+router.delete('/delete/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params
+        await Item.delete(id)
+
+        return res.status(200).json({msg: "Item deleted"})
 
     }catch(err){
         return next(err)
