@@ -17,7 +17,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE rating_comments(
-    id INTEGER PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users,
     rating INTEGER NOT NULL,
     comment TEXT,
@@ -25,7 +25,7 @@ CREATE TABLE rating_comments(
 );
 
 CREATE TABLE addresses(
-    id INTEGER PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users ON DELETE CASCADE,
     street_address TEXT,
     city TEXT,
@@ -36,17 +36,17 @@ CREATE TABLE addresses(
 );
 
 CREATE TABLE orders (
-    id INTEGER PRIMARY KEY ,
+    id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users ON DELETE CASCADE,
     order_date DATE DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE item(
-    id INTEGER PRIMARY KEY ,
+    id SERIAL PRIMARY KEY,
     type TEXT,
     name TEXT,
     waigth FLOAT,
     price FLOAT,
-    date DATE DEFAULT CURRENT_DATE,
-    details TEXT
+    details TEXT,
+    date DATE DEFAULT CURRENT_DATE
 );

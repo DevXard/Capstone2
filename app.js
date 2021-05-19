@@ -6,8 +6,10 @@ const ExpressError = require('./helpers/expressError');
 app.use(express.json());
 
 const authRoutes = require('./routes/auth')
+const itemsRoutes = require('./routes/items')
 
 app.use('/auth', authRoutes);
+app.use('/items', itemsRoutes);
 
 app.get('/', (req, res) => res.send('Hello World'))
 
