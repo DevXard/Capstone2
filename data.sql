@@ -21,7 +21,7 @@ CREATE TABLE rating_comments(
     user_id INTEGER REFERENCES users,
     rating INTEGER NOT NULL,
     comment TEXT,
-    date TIMESTAMP
+    date DATE DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE addresses(
@@ -38,7 +38,7 @@ CREATE TABLE addresses(
 CREATE TABLE orders (
     id INTEGER PRIMARY KEY ,
     user_id INTEGER REFERENCES users ON DELETE CASCADE,
-    order_date TIMESTAMP
+    order_date DATE DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE item(
@@ -47,6 +47,6 @@ CREATE TABLE item(
     name TEXT,
     waigth FLOAT,
     price FLOAT,
-    date TIMESTAMP,
+    date DATE DEFAULT CURRENT_DATE,
     details TEXT
 );
