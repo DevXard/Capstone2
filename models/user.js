@@ -9,7 +9,7 @@ class User {
     // Check if user exsists
         // if exsists throw error
         // else insert new user in to database
-    static async register(username, password, name, email, address, phone){
+    static async register(username, password, name, email, phone){
         
         const checkDuplicate = await db.query(
             `SELECT username FROM users WHERE username = $1`,
@@ -27,9 +27,9 @@ class User {
         
         const result = await db.query(
             `INSERT INTO users 
-                (username, password, name, email, default_address, phone)
-            VALUES ($1, $2, $3, $4, $5, $6)
-            RETURNING *`, [username, hashedPassword, name, email, address, phone]
+                (username, password, name, email, phone)
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING *`, [username, hashedPassword, name, email, phone]
         )
         return result.rows[0]
     }

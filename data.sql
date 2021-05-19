@@ -10,7 +10,6 @@ CREATE TABLE users (
     name VARCHAR(150) NOT NULL,
     password TEXT NOT NULL,
     email VARCHAR(150) NOT NULL,
-    default_address VARCHAR(250) NOT NULL,
     phone VARCHAR(20) NOT NULL,
     seller BOOLEAN DEFAULT FALSE,
     date DATE DEFAULT CURRENT_DATE
@@ -32,7 +31,8 @@ CREATE TABLE addresses(
     state TEXT,
     zip TEXT,
     lng FLOAT,
-    lat FLOAT
+    lat FLOAT,
+    default_address BOOLEAN
 );
 
 CREATE TABLE orders (
