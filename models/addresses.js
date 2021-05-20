@@ -116,12 +116,13 @@ class Addresses {
     }
 
     static async delete(id){
+        
         const result = await db.query(
-            `DELETE FROM users WHERE id = $1`,
+            `DELETE FROM addresses WHERE id = $1 RETURNING *`,
             [id]
         )
         const address = result.rows[0]
-
+        
         if(!address) {
             throw new ExpressError("addres not found")
         }
