@@ -114,6 +114,20 @@ class Addresses {
 
         return address;
     }
+
+    static async delete(id){
+        const result = await db.query(
+            `DELETE FROM users WHERE id = $1`,
+            [id]
+        )
+        const address = result.rows[0]
+
+        if(!address) {
+            throw new ExpressError("addres not found")
+        }
+
+        return address
+    }
 }
 
 module.exports = Addresses;
