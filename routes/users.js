@@ -22,4 +22,26 @@ router.patch('/toseller/:id', async (req, res, next) => {
     }
 })
 
+/*
+    Update user info
+
+    Accepts {username, password, name, email, phone}
+
+    Returns {username, password, name, email, phone, seller, date}
+*/
+
+router.patch('/update/:id', async (req, res, next) => {
+
+    try {
+        const {id} = req.params;
+        const fields = {...req.body}
+
+        const user = await User.update(fields, id)
+
+        return res.status(200).json({user})
+    }catch(err) {
+        return next(err);
+    }
+})
+
 module.exports = router;

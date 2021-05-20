@@ -80,6 +80,30 @@ class User {
         return result.rows[0]
     
     }
+
+    static async update(columns, id) {
+
+        const userToUpdate = await db.query(
+            `SELECT * FROM users WHERE id = $1`,
+            [id]
+        )
+
+        const user = userToUpdate.rows[0]
+        if(!user) {
+            throw new ExpressError("User Does Not Exsist", 404)
+        }
+
+        const {query, values} = updataDatabase(
+            'users',
+            columns, 
+            "id",
+            id
+        )
+
+        const result = await db.query(query, values)
+
+        return result.rows[0]
+    }
 }
 
 module.exports = User;
