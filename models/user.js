@@ -104,6 +104,18 @@ class User {
 
         return result.rows[0]
     }
+
+    static async delete(id){
+        const user = await db.query(
+            `DELETE FROM users WHERE id = $1`, [id]
+        )
+        
+        if(!user){
+            throw new ExpressError("User not found", 404)
+        }
+
+        return user.rows[0]
+    }
 }
 
 module.exports = User;
