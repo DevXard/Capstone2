@@ -1,0 +1,1 @@
+SELECT lng, lat FROM addresses JOIN users ON addresses.user_id = users.id WHERE users.seller = true AND addresses.default_address = true;

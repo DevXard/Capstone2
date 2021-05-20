@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const db = require('../db');
 const ExpressError = require('../helpers/expressError');
 const { BCRYPT_WORK_FACTOR } = require('../config');
+const updataDatabase = require('../helpers/updateTable');
 
 class User {
 
@@ -64,6 +65,20 @@ class User {
             [username]
         )
         return result.rows[0]
+    }
+
+    static async becomeSeller(id) {
+        const {query, values} = updataDatabase(
+            "users",
+            {seller: true},
+            "id",
+            id
+        )
+
+        const result = await db.query(query, values);
+
+        return result.rows[0]
+    
     }
 }
 

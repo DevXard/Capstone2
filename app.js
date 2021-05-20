@@ -5,13 +5,15 @@ const ExpressError = require('./helpers/expressError');
 
 app.use(express.json());
 
-const authRoutes = require('./routes/auth')
-const itemsRoutes = require('./routes/items')
-const addressRoutes = require('./routes/addresses')
+const authRoutes = require('./routes/auth');
+const itemsRoutes = require('./routes/items');
+const addressRoutes = require('./routes/addresses');
+const userRoutes = require('./routes/users');
 
 app.use('/auth', authRoutes);
 app.use('/items', itemsRoutes);
 app.use('/address', addressRoutes);
+app.use('/user', userRoutes);
 
 app.get('/', (req, res) => res.send('Hello World'))
 
