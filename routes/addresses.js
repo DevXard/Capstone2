@@ -24,6 +24,7 @@ router.post('/register', async(req, res, next) => {
 
 /*
     Get all addresses
+
     Accepts {id} as parmeter
 
     Returns [{id, user_id, street_address, city, state, zip, lng, lat, default_address}]
@@ -40,14 +41,46 @@ router.get('/all/:id', async(req, res, next) => {
     }
 })
 
+/*
+    Request addres by id
+
+    Accepts {id}
+
+    Returns {id, user_id, street_address, city, state, zip, lng, lat, default_address}
+*/
+
 router.get('/:id', async (req, res, next) => {
 
     try {
-        
-    }catch(err) {
+        const { id } = req.params;
+        const addresses = await Addresses.getById(id)
 
+        return res.status(200).json({addresses})
+    }catch(err) {
+        return next(err);
     }
 })
+
+/*
+    Update Addresses
+
+    Accepts {fieldsTo Update, id}
+
+    Returns {id, user_id, street_address, city, state, zip, lng, lat, default_address}
+*/
+
+router.patch('/update/:id', async (req, res, next) => {
+    try {
+        const fields = {...req.body}
+        const {id} = req.params;
+        const addresses = await Addresses.updateAddress(fields, id)
+
+        return res.status(200).json({addresses})
+    }catch(err){
+        return next(err);
+    }
+})
+
 /*
     Delete Address
 
