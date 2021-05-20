@@ -26,6 +26,7 @@ router.post('/register', async (req, res, next) => {
     }
 })
 
+
 /* Login user and return token
 
     Accepts {username, password}

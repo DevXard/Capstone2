@@ -76,11 +76,12 @@ class Addresses {
         )
     }
 
-    static async getAll(){
+    static async getAll(id){
         const result = await db.query(
             `SELECT * 
             FROM addresses
-            `
+            WHERE user_id = $1`,
+            [id]
         )
 
         return result.rows

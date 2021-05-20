@@ -23,6 +23,32 @@ router.post('/register', async(req, res, next) => {
 })
 
 /*
+    Get all addresses
+    Accepts {id} as parmeter
+
+    Returns [{id, user_id, street_address, city, state, zip, lng, lat, default_address}]
+*/
+
+router.get('/all/:id', async(req, res, next) => {
+    try {
+        const {id} = req.params;
+        const addresses = await Addresses.getAll(id);
+
+        return res.status(200).json({addresses})
+    } catch(err) {
+        return next(err);
+    }
+})
+
+router.get('/:id', async (req, res, next) => {
+
+    try {
+        
+    }catch(err) {
+
+    }
+})
+/*
     Delete Address
 
     Accepts {id}
