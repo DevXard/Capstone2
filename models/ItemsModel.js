@@ -8,7 +8,8 @@ class Item {
         const result = await db.query(
             `INSERT INTO item
                 (user_id, type, name, waigth, price, details)
-            VALUES ($1, $2, $3, $4, $5, $6)`,
+            VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING *`,
             [user_id, type, name, waigth, price, details]
         )
 
