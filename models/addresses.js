@@ -1,5 +1,6 @@
 const db = require('../db');
 const ExpressError = require('../helpers/expressError');
+const updataDatabase = require('../helpers/updateTable');
 
 class Addresses {
 
@@ -83,6 +84,35 @@ class Addresses {
         )
 
         return result.rows
+    }
+
+    static async getById(id){
+        const result = await db.query(
+            `SELECT * 
+            FROM addresses
+            WHERE id = $1`,
+            [id]
+        )
+
+        return result.rows[0]
+    }
+
+    static async updateAddress(columns, id){
+        const {query, values} = updataDatabase(
+            "addresses",
+            columns,
+            "id",
+            id
+        )
+
+        const result = await db.query(query, values)
+        const address = result.rows[0]
+
+        if(!address) {
+            throw new ExpressError("Address not Found", 404)
+        }
+
+        return address;
     }
 }
 

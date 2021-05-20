@@ -15,6 +15,7 @@ router.post('/register' , async (req, res, next) => {
 
     try {
         const {user_id, type, name, waigth, price, details } = req.body;
+        console.log(req.body)
         await Item.register(user_id, type, name, waigth, price, details)
 
         return res.status(200).json({msg: "Your item was successfully registered"})
