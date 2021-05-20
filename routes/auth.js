@@ -14,8 +14,10 @@ const createToken = require('../helpers/createToken');
 router.post('/register', async (req, res, next) => {
     
     try {
-        const {username, password, name, email, phone} = req.body;
+        const {username, password, name, email, phone, 
+        street_address, city, state, zip, lng, lat} = req.body;
         let user = await User.register(username, password, name, email, phone)
+        await Adresses.registerDefault(user.id, street_address, city, state, zip, lng, lat)
 
         const token = createToken(username, user.seller)
         return res.status(201).json({token})
