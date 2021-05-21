@@ -2,7 +2,7 @@ const db = require('../db');
 const ExpressError = require('../helpers/expressError');
 const updataDatabase = require('../helpers/updateTable');
 
-class commentsAndRating {
+class CommentsAndRating {
 
 /*
     Register new comment
@@ -109,3 +109,5 @@ class commentsAndRating {
         return rating_comments
     }
 }
+
+module.exports = CommentsAndRating
