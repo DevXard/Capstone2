@@ -6,11 +6,13 @@ const distance = require('../helpers/filterWithDistance');
 class Addresses {
 
 /*
-    Register new address
+    RegisterDefault new address
 
-    Accepts {user_id, street_address, city, state, zip, lng, lat, default_address}
+    Accepts {user_id, street_address, city, state, zip, lng, lat}
 
     returns {id, user_id, street_address, city, state, zip, lng, lat, default_address}
+
+    default_address will be awais true
 */
 
     static async registerDefault(user_id, street_address, city, state, zip, lng, lat){
@@ -27,6 +29,16 @@ class Addresses {
         return result.rows[0]
     }
 
+/*
+    Register new Addresses
+
+    Accepts {user_id, street_address, city, state, zip, lng, lat}
+
+    returns {id, user_id, street_address, city, state, zip, lng, lat, default_address}
+
+    default_address will awais be false
+*/
+
     static async addNewAddress(user_id, street_address, city, state, zip, lng, lat){
 
         const result = await db.query(
@@ -40,6 +52,13 @@ class Addresses {
 
         return result.rows[0]
     }
+
+    /*
+        Change default address
+
+        Accepts {userId, AddressesId}
+
+    */
 
     static async switchDefaultAddress(userId, addressId) {
 
@@ -77,6 +96,13 @@ class Addresses {
         )
     }
 
+/*
+    Get all addresses of a user.
+
+    Accepts {userID}
+
+    returns [{id, user_id, street_address, city, state, zip, lng, lat, default_address}]
+*/
     static async getAll(id){
         const result = await db.query(
             `SELECT * 
@@ -88,6 +114,14 @@ class Addresses {
         return result.rows
     }
 
+/*
+    Get address by ID
+
+    Accepts {addresID}
+
+    Returns {id, user_id, street_address, city, state, zip, lng, lat, default_address}
+*/
+
     static async getById(id){
         const result = await db.query(
             `SELECT * 
@@ -98,6 +132,14 @@ class Addresses {
 
         return result.rows[0]
     }
+
+/*
+    Get all sellers main address (default address) in a radius of x miles
+
+    Accepts {lng, lat, miles}
+
+    Returns [{id, user_id, street_address, city, state, zip, lng, lat, default_address}]
+*/
 
     static async getAddressInRadius(lng, lat, miles){
 
@@ -118,6 +160,14 @@ class Addresses {
         return filterdAddress
     }
 
+/*
+    Update Addresses
+
+    Accepts {{street_address, city, state, zip, lng, lat}, addressID}
+
+    Returns {id, user_id, street_address, city, state, zip, lng, lat, default_address}
+*/
+
     static async updateAddress(columns, id){
         const {query, values} = updataDatabase(
             "addresses",
@@ -135,6 +185,14 @@ class Addresses {
 
         return address;
     }
+
+/*
+    Delete address
+
+    Accepts {AddressID}
+
+    Returns {id, user_id, street_address, city, state, zip, lng, lat, default_address}
+*/
 
     static async delete(id){
         
