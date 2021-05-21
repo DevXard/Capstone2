@@ -1,6 +1,7 @@
 const db = require('../db');
 const ExpressError = require('../helpers/expressError');
 const updataDatabase = require('../helpers/updateTable');
+const distance = require('../helpers/filterWithDistance');
 
 class Addresses {
 
@@ -96,6 +97,25 @@ class Addresses {
         )
 
         return result.rows[0]
+    }
+
+    static async getAddressInRadius(lng, lat, miles){
+
+        
+        const result = await db.query(
+            `SELECT lng, lat 
+            FROM addresses 
+            JOIN users ON addresses.user_id = users.id 
+            WHERE users.seller = true AND addresses.default_address = true;`
+        )
+
+        const addressList = result.rows
+        
+        const filterdAddress = addressList.filter(address => {
+            return distance(lng, lat, address.lng, address.lat) < miles;
+        })
+
+        return filterdAddress
     }
 
     static async updateAddress(columns, id){

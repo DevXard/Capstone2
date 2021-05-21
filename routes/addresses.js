@@ -22,6 +22,18 @@ router.post('/register', async(req, res, next) => {
     }
 })
 
+router.get('/rad', async (req, res, next) => {
+    
+    try { 
+        const {lng, lat, miles} = req.body;
+        const addresses = await Addresses.getAddressInRadius(lng, lat, miles)
+
+        return res.status(200).json({addresses})
+    }catch(err){
+        return next(err);
+    }
+})
+
 /*
     Get all addresses
 
@@ -60,6 +72,8 @@ router.get('/:id', async (req, res, next) => {
         return next(err);
     }
 })
+
+
 
 /*
     Update Addresses
