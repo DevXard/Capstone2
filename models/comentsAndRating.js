@@ -25,6 +25,32 @@ class CommentsAndRating {
     }
 
 /*
+    Get Rating
+
+    Accepts {userId}
+
+    Returning average rating
+*/
+
+    static async getRating(id) {
+        
+        const result = await db.query(
+            `SELECT rating
+            FROM rating_comments
+            WHERE user_id = $1`,
+            [id]
+        )
+
+        const ratings = result.rows
+        
+        const avg = ratings.reduce((acc, val) => {
+            return acc + val.rating
+        }, 0)
+        
+        return avg / ratings.length
+    }
+
+/*
     Get all comments
 
     Returns [{id, user_id, rating, comment}]

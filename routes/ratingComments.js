@@ -48,6 +48,23 @@ router.get('/:id', async (req, res, next) => {
 })
 
 /*
+    Get Rating of seller
+
+*/
+
+router.get('/rating/:id', async (req, res, next) => {
+    
+    try {
+        const {id} = req.params;
+        const rating = await Comment.getRating(id)
+        
+        return res.status(200).json({rating})
+    } catch(err){
+        return next(err);
+    }
+})
+
+/*
     Update comment
 */
 
