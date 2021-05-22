@@ -14,9 +14,9 @@ const router = express.Router();
 router.post('/register' , async (req, res, next) => {
 
     try {
-        const {user_id, type, name, waigth, price, details } = req.body;
+        const {user_id, type, name, quantity, price, details } = req.body;
         console.log(req.body)
-        await Item.register(user_id, type, name, waigth, price, details)
+        await Item.register(user_id, type, name, quantity, price, details)
 
         return res.status(200).json({msg: "Your item was successfully registered"})
     }catch(err){
@@ -47,7 +47,7 @@ router.get('/', async (req, res, next) => {
 router.patch('/update/:id', async (req, res, next) => {
     
     try {
-        const {username, type, name, waigth, price, details} = req.body;
+        const {username, type, name, quantity, price, details} = req.body;
         const id = req.params.id;
 
         const user = await User.getUser(username)
@@ -55,7 +55,7 @@ router.patch('/update/:id', async (req, res, next) => {
 
         if(user.id === itemToUpdate.user_id){
             
-            const item = await Item.updateItem(id, type, name, waigth, price, details)
+            const item = await Item.updateItem(id, type, name, quantity, price, details)
 
             return res.status(200).json({msg: "Item updated successfully", item})
         }else{

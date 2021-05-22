@@ -3,14 +3,14 @@ const ExpressError = require('../helpers/expressError');
 
 class Item {
 
-    static async register(user_id, type, name, waigth, price, details){
+    static async register(user_id, type, name, quantity, price, details){
         
         const result = await db.query(
             `INSERT INTO item
-                (user_id, type, name, waigth, price, details)
+                (user_id, type, name, quantity, price, details)
             VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING *`,
-            [user_id, type, name, waigth, price, details]
+            [user_id, type, name, quantity, price, details]
         )
 
         return result.rows[0];
@@ -38,7 +38,7 @@ class Item {
         return result.rows[0]
     }
 
-    static async updateItem(id, type, name, waigth, price, details){
+    static async updateItem(id, type, name, quantity, price, details){
 
         const itemToUpdate = await db.query(
             `SELECT * 
@@ -51,7 +51,7 @@ class Item {
         
         let uType = type || item.type;
         let uName = name || item.name;
-        let uWaigth = waigth || item.waigth;
+        let uQuantity = quantity || item.quantity;
         let uPrice = price || item.price;
         let uDetails = details || item.details;
 
@@ -60,12 +60,12 @@ class Item {
             SET 
             type = $1,
             name = $2,
-            waigth = $3,
+            quantity = $3,
             price = $4,
             details = $5
             WHERE id = $6
             RETURNING *`,
-            [uType, uName, uWaigth, uPrice, uDetails, id]
+            [uType, uName, uQuantity, uPrice, uDetails, id]
         )
 
         if(!result.rows[0]) throw new ExpressError("Item does not exsist", 404)

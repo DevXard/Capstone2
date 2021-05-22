@@ -48,7 +48,7 @@ CREATE TABLE item(
     user_id INTEGER REFERENCES users ON DELETE CASCADE,
     type TEXT,
     name TEXT,
-    waigth FLOAT,
+    quantity FLOAT,
     price FLOAT,
     details TEXT,
     date DATE DEFAULT CURRENT_DATE
@@ -58,7 +58,5 @@ CREATE TABLE order_details (
     id SERIAL PRIMARY KEY,
     order_Id INTEGER REFERENCES orders ON DELETE CASCADE,
     item_id INTEGER REFERENCES item ON DELETE CASCADE,
-    quantity FLOAT,
-    waigth FLOAT,
-    isqty BOOLEAN
+    quantity FLOAT
 );
