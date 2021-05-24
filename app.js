@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
+const {authenticateJWT} = require('./middleware/authUser');
 const ExpressError = require('./helpers/expressError');
 
 
 app.use(express.json());
+app.use(authenticateJWT)
 
 const authRoutes = require('./routes/auth');
 const itemsRoutes = require('./routes/items');
