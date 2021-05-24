@@ -60,9 +60,10 @@ class User {
 
         const result = await db.query(
             `SELECT * 
-            FROM users
-            WHERE username = $1`,
-            [username]
+            FROM users AS u
+            JOIN addresses AS a ON u.id = a.user_id
+            WHERE username = $1 AND default_address = $2`,
+            [username, true]
         )
         return result.rows[0]
     }

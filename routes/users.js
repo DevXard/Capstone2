@@ -44,4 +44,19 @@ router.patch('/update/:id', async (req, res, next) => {
     }
 })
 
+/*
+    Get user by username
+*/
+
+router.get('/:username', async (req, res, next) => {
+    try {   
+        const {username} = req.params;
+        const user = await User.getUser(username);
+
+        return res.status(200).json({user})
+    } catch(err) {
+
+    }
+})
+
 module.exports = router;
