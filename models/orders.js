@@ -73,6 +73,28 @@ class Orders {
 
         return result.rows[0]
     }
+
+/*
+    Delete an Order
+
+    Accepts {id}
+
+    Retuns {msg}
+*/
+
+    static async delete(id){
+
+        const orderResult = await db.query(
+            `SELECT od.quantity FROM orders AS o
+            JOIN order_details AS od ON o.id = od.order_Id
+            WHERE o.id = $1`,
+            [id]
+        )
+
+        const orderQty = result.rows[0]
+
+        
+    }
 }
 
 module.exports = Orders;

@@ -47,15 +47,16 @@ router.get('/', async (req, res, next) => {
 router.patch('/update/:id', async (req, res, next) => {
     
     try {
-        const {username, type, name, quantity, price, details} = req.body;
+        const fields = {...req.body}
         const id = req.params.id;
 
-        const user = await User.getUser(username)
+        const user = await User.getUser(fields.username)
         const itemToUpdate = await Item.getItemById(id)
 
         if(user.id === itemToUpdate.user_id){
-            
-            const item = await Item.updateItem(id, type, name, quantity, price, details)
+            delete fields.username
+           
+            const item = await Item.updateItem(fields, id)
 
             return res.status(200).json({msg: "Item updated successfully", item})
         }else{

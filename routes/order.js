@@ -17,4 +17,20 @@ router.post('/register', async (req, res, next) => {
     }
 })
 
+/*
+    Delete order
+*/
+
+router.delete('/delete/:id', async (req, res, next) => {
+    try {
+        const {id} = req.params;
+
+        await Order.delete(id)
+
+        return res.status(200).json({msg: "Order deleted successfully"})
+    } catch (err) {
+        return next(err)
+    }
+})
+
 module.exports = router;

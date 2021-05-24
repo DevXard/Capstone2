@@ -1,5 +1,6 @@
 const db = require('../db');
 const ExpressError = require('../helpers/expressError');
+const updataDatabase = require('../helpers/updateTable')
 
 class Item {
 
@@ -38,35 +39,16 @@ class Item {
         return result.rows[0]
     }
 
-    static async updateItem(id, type, name, quantity, price, details){
+    static async updateItem(comumns, id){
 
-        const itemToUpdate = await db.query(
-            `SELECT * 
-            FROM item
-            WHERE id = $1`,
-            [id]
+        const {query, values} = updataDatabase(
+            "item", 
+            comumns,
+            "id",
+            id
         )
 
-        const item = itemToUpdate.rows[0];
-        
-        let uType = type || item.type;
-        let uName = name || item.name;
-        let uQuantity = quantity || item.quantity;
-        let uPrice = price || item.price;
-        let uDetails = details || item.details;
-
-        const result = await db.query(
-            `UPDATE item
-            SET 
-            type = $1,
-            name = $2,
-            quantity = $3,
-            price = $4,
-            details = $5
-            WHERE id = $6
-            RETURNING *`,
-            [uType, uName, uQuantity, uPrice, uDetails, id]
-        )
+        const result = await db.query(query, values)
 
         if(!result.rows[0]) throw new ExpressError("Item does not exsist", 404)
 
