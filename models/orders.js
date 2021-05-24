@@ -45,8 +45,12 @@ class Orders {
         )
 
         const item = orderdItem.rows[0]
+
+        if(item.quantity < 1) throw new ExpressError("Item quantity to low", 404)
         
         const newQty = item.quantity - quantity
+
+        if(newQty < 1) throw new ExpressError("Item quantity not enough", 404)
 
         await db.query(
             `UPDATE item
@@ -57,7 +61,9 @@ class Orders {
         )
 
         const result = await db.query(
-            `SELECT * FROM users AS u 
+            `SELECT u.id, o.id AS o_id, o.order_date, od.id AS od_id, od.quantity,
+            i.id AS i_id, i.name, i.type, i.quantity AS i_qty, i.price, i.details
+            FROM users AS u 
             JOIN orders AS o ON u.id = o.user_id 
             JOIN order_details AS od ON o.id = od.order_id 
             JOIN item AS i ON i.id = od.item_id 

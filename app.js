@@ -10,12 +10,14 @@ const itemsRoutes = require('./routes/items');
 const addressRoutes = require('./routes/addresses');
 const userRoutes = require('./routes/users');
 const commentsRoutes = require('./routes/ratingComments');
+const orderRoutes = require('./routes/order');
 
 app.use('/auth', authRoutes);
 app.use('/items', itemsRoutes);
 app.use('/address', addressRoutes);
 app.use('/user', userRoutes);
 app.use('/comments', commentsRoutes);
+app.use('/order', orderRoutes);
 
 app.get('/', (req, res) => res.send('Hello World'))
 
