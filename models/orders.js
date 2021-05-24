@@ -1,7 +1,7 @@
 const db = require('../db');
 const User = require('../models/user');
 const ExpressError = require('../helpers/expressError');
-const updataDatabase = require('../helpers/updateTable');
+const Item = require('../models/ItemsModel');
 
 class Orders {
 
@@ -85,15 +85,37 @@ class Orders {
     static async delete(id){
 
         const orderResult = await db.query(
-            `SELECT od.quantity FROM orders AS o
+            `SELECT od.id, od.quantity, od.item_id FROM orders AS o
             JOIN order_details AS od ON o.id = od.order_Id
             WHERE o.id = $1`,
             [id]
         )
 
-        const orderQty = result.rows[0]
+        const order = orderResult.rows[0]
+       
+        const item = await db.query(
+            `SELECT quantity FROM item
+            WHERE id = $1`,
+            [order.item_id]
+        )
+            
+        const newQty = item.rows[0].quantity + order.quantity
+            
+        const cols = {quantity: newQty}
+        await Item.updateItem(cols, order.item_id)
 
-        
+        const orderDeleted = await db.query(
+            `DELETE FROM orders WHERE id = $1
+            RETURNING *`,
+            [id]
+        )
+        const orderDetailsDeleted = await db.query(
+            `DELETE FROM order_details WHERE id = $1
+            RETURNING *`,
+            [order.id]
+        )
+
+        return {orderDeleted, orderDetailsDeleted}
     }
 }
 
