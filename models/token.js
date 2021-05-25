@@ -11,9 +11,9 @@ class Token {
             [user_id]
         )
 
-        const token = result.rows[0]
+        const tokenFound = result.rows[0]
 
-        if(token) throw ExpressError('User is alredy loged in', 401);
+        if(tokenFound) throw ExpressError('User is alredy loged in', 401);
 
         const registerToken = await db.query(
             `INSERT INTO token
@@ -25,6 +25,17 @@ class Token {
         )
 
         return registerToken.rows[0]
+    }
+
+    static async getToken(user_id){
+        const result = await db.query(
+            `SELECT *
+            FROM token
+            WHERE user_id = $1`,
+            [user_id]
+        )
+
+        return result.rows[0]
     }
 
     static async delete(id){
