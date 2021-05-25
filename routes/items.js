@@ -2,6 +2,7 @@ const Item = require('../models/ItemsModel');
 const User = require('../models/user');
 const express = require('express');
 const router = express.Router();
+const {ensureLoggedInAndSeller} = require('../middleware/authUser');
 
 
 /*  Register a new Item
@@ -11,11 +12,11 @@ const router = express.Router();
     Returns {type, name, waigth, price, details}
 */
 
-router.post('/register' , async (req, res, next) => {
+router.post('/register', ensureLoggedInAndSeller, async (req, res, next) => {
 
     try {
         const {user_id, type, name, quantity, price, details } = req.body;
-        console.log(req.body)
+        
         await Item.register(user_id, type, name, quantity, price, details)
 
         return res.status(200).json({msg: "Your item was successfully registered"})

@@ -15,6 +15,12 @@ CREATE TABLE users (
     date DATE DEFAULT CURRENT_DATE
 );
 
+CREATE TABLE token (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users,
+    token TEXT NOT NULL
+);
+
 CREATE TABLE rating_comments(
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users,

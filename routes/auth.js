@@ -19,7 +19,7 @@ router.post('/register', async (req, res, next) => {
         let user = await User.register(username, password, name, email, phone)
         await Adresses.registerDefault(user.id, street_address, city, state, zip, lng, lat)
 
-        const token = createToken(username, user.seller)
+        const {token} = createToken(username, user.seller)
         return res.status(201).json({token})
     }catch(err) {
         next(err);
@@ -38,7 +38,7 @@ router.post('/login', async (req, res, next) => {
         const {username, password} = req.body;
         let user = await User.authenticate(username, password)
         console.log(user)
-        const token = createToken(username, user.seller)
+        const {token, refreshToken} = createToken(username, user.seller)
         return res.json({token})
     }catch(err) {
         return next(err)
