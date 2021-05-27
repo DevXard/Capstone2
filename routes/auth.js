@@ -6,6 +6,7 @@ const router = express.Router();
 const createToken = require('../helpers/createToken');
 const verifyToken = require('../helpers/verifyRefreshToken');
 
+
 /* Register user 
 
     Accepts {username, password, name, email, address, phone}
@@ -15,15 +16,15 @@ const verifyToken = require('../helpers/verifyRefreshToken');
 
 router.post('/register', async (req, res, next) => {
     try {
-        console.log(req.body)
+        
         const {username, password, name, email, phone, 
         street_address, city, state, zip, lng, lat} = req.body;
         let user = await User.register(username, password, name, email, phone)
         await Adresses.registerDefault(user.id, street_address, city, state, zip, lng, lat)
 
-        const {token, refreshToken} = createToken(username, user.seller)
+        const {token, refreshToken} = createToken(user.id, username, user.seller)
         await Token.register(user.id, refreshToken)
-
+        res.cookie('jwt', refreshToken, {sameSite: "strict", path: '/', httpOnly: true})
         return res.status(201).json({token, refreshToken})
     }catch(err) {
         next(err);
@@ -45,10 +46,11 @@ router.post('/login', async (req, res, next) => {
         const {username, password} = req.body;
         let user = await User.authenticate(username, password)
         console.log(user)
-        const {token, refreshToken} = createToken(username, user.seller)
+        const {token, refreshToken} = createToken(user.id, username, user.seller)
         const refToken = await Token.register(user.id, refreshToken)
         if(!refToken) throw new ExpressError("Something went wrong", 404)
-        return res.json({token, refreshToken})
+        res.status(202).cookie('jwt', refreshToken, {sameSite: "strict", path: '/', httpOnly: true})
+        return res.json({token})
     }catch(err) {
         return next(err)
     }
@@ -83,7 +85,7 @@ router.post('/logout', async (req, res, next) => {
         const deleteToken = await Token.delete(id)
         
         if(!deleteToken) throw new ExpressError("Token was not deleted", 404)
-
+        res.clearCookie('jwt')
         return res.status(200).json({msg: "You are loged out"})
     }catch(err){
         return next(err);

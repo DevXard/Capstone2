@@ -1,6 +1,7 @@
 require('dotenv');
 
 const PORT = +process.env.PORT || 4000;
+const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000/'
 
 const SECRET_KEY = process.env.SECRET_KEY || 'development-secret-key';
 const REFRESH_KEY = process.env.REFRESH_KEY || 'Refresh-Token';
@@ -17,5 +18,6 @@ module.exports = {
     PORT,
     BCRYPT_WORK_FACTOR,
     SECRET_KEY,
-    REFRESH_KEY
+    REFRESH_KEY,
+    CORS_ORIGIN
 }

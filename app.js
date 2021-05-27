@@ -4,8 +4,9 @@ const {authenticateJWT} = require('./middleware/authUser');
 const ExpressError = require('./helpers/expressError');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const {CORS_ORIGIN} = require('./config');
 
-app.use(cors());
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(cookieParser());
 app.use(express.json());
 app.use(authenticateJWT)
