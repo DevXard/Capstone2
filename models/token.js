@@ -13,7 +13,7 @@ class Token {
 
         const tokenFound = result.rows[0]
 
-        if(tokenFound) throw ExpressError('User is alredy loged in', 401);
+        if(tokenFound) throw new ExpressError('User is alredy loged in', 401);
 
         const registerToken = await db.query(
             `INSERT INTO token

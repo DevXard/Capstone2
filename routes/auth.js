@@ -14,8 +14,8 @@ const verifyToken = require('../helpers/verifyRefreshToken');
 */
 
 router.post('/register', async (req, res, next) => {
-    
     try {
+        console.log(req.body)
         const {username, password, name, email, phone, 
         street_address, city, state, zip, lng, lat} = req.body;
         let user = await User.register(username, password, name, email, phone)

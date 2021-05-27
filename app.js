@@ -2,8 +2,11 @@ const express = require('express');
 const app = express();
 const {authenticateJWT} = require('./middleware/authUser');
 const ExpressError = require('./helpers/expressError');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
-
+app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 app.use(authenticateJWT)
 

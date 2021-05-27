@@ -12,7 +12,7 @@ const {ensureLoggedInAndSeller} = require('../middleware/authUser');
     Returns {type, name, waigth, price, details}
 */
 
-router.post('/register', ensureLoggedInAndSeller, async (req, res, next) => {
+router.post('/register', async (req, res, next) => {
 
     try {
         const {user_id, type, name, quantity, price, details } = req.body;
