@@ -58,12 +58,20 @@ router.post('/login', async (req, res, next) => {
 
 router.get('/token', async (req, res, next) => {
     try {
-        const {refreshToken, id} = req.body;
-        const dbRefreshToken = Token.getToken(id)
-        if(refreshToken !== dbRefreshToken.token) throw new ExpressError("Refresh token does not match",403)
-        const newToken = verifyToken(refreshToken)
+        const {jwt} = req.cookies;
+        
+        if(!jwt) {
+            return res.status(200).json({token: "", logedIn: false})
+        }
+        // const dbRefreshToken = Token.getToken(id)
+        // if(refreshToken !== dbRefreshToken.token) throw new ExpressError("Refresh token does not match",403)
+        const newToken = verifyToken(jwt)
+        const {uId, username, seller} = newToken
 
-        return res.status(200).json({newToken})
+        const {token, refreshToken} = createToken(uId, username, seller)
+
+        res.cookie('jwt', refreshToken, {sameSite: "strict", path: '/', httpOnly: true})
+        return res.status(200).json({token, logedIn: true})
     } catch(err) {
         return next(err)
     }
