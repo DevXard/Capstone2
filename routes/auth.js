@@ -59,7 +59,6 @@ router.post('/login', async (req, res, next) => {
 router.get('/token', async (req, res, next) => {
     try {
         const {jwt} = req.cookies;
-        
         if(!jwt) {
             return res.status(200).json({token: "", logedIn: false})
         }

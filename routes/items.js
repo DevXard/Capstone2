@@ -2,7 +2,7 @@ const Item = require('../models/ItemsModel');
 const User = require('../models/user');
 const express = require('express');
 const router = express.Router();
-const {ensureLoggedInAndSeller} = require('../middleware/authUser');
+const {ensureLoggedInAndSeller, ensureLoggedIn} = require('../middleware/authUser');
 
 
 /*  Register a new Item
