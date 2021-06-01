@@ -15,7 +15,7 @@ class Orders {
 
     static async register(userId, itemId, quantity){
         const userExsists = User.getUser(userId);
-
+         console.log(userExsists)
         if(!userExsists) throw new ExpressError("User does not exist", 404);
 
         const orderResult = await db.query(

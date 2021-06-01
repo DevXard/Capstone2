@@ -59,7 +59,8 @@ class User {
     static async getUser(username){
 
         const result = await db.query(
-            `SELECT * 
+            `SELECT u.username, u.name, u.email, u.id, u.phone, u.seller, u.date,
+            a.user_id, a.street_address, a.city, a.state, a.zip, a.lng, a.lat, a.default_address
             FROM users AS u
             JOIN addresses AS a ON u.id = a.user_id
             WHERE username = $1 AND default_address = $2`,

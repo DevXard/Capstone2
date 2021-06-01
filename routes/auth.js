@@ -45,7 +45,7 @@ router.post('/login', async (req, res, next) => {
     try {
         const {username, password} = req.body;
         let user = await User.authenticate(username, password)
-        console.log(user)
+        
         const {token, refreshToken} = createToken(user.id, username, user.seller)
         // const refToken = await Token.register(user.id, refreshToken)
         // if(!refToken) throw new ExpressError("Something went wrong", 404)
@@ -88,10 +88,10 @@ router.get('/token', async (req, res, next) => {
 router.post('/logout', async (req, res, next) => {
     try{
         const {id} = req.body;
-        console.log(id)
-        const deleteToken = await Token.delete(id)
         
-        if(!deleteToken) throw new ExpressError("Token was not deleted", 404)
+        // const deleteToken = await Token.delete(id)
+        
+        // if(!deleteToken) throw new ExpressError("Token was not deleted", 404)
         res.clearCookie('jwt')
         return res.status(200).json({msg: "You are loged out"})
     }catch(err){
