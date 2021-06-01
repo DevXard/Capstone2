@@ -52,7 +52,7 @@ router.get('/:username', async (req, res, next) => {
     try {   
         const {username} = req.params;
         const user = await User.getUser(username);
-
+        delete user.password;
         return res.status(200).json({user})
     } catch(err) {
 

@@ -12,7 +12,7 @@ const {ensureLoggedInAndSeller, ensureLoggedIn} = require('../middleware/authUse
     Returns {type, name, waigth, price, details}
 */
 
-router.post('/register', async (req, res, next) => {
+router.post('/register', ensureLoggedInAndSeller, async (req, res, next) => {
 
     try {
         const {user_id, type, name, quantity, price, details } = req.body;
@@ -36,6 +36,24 @@ router.get('/', async (req, res, next) => {
 
         return res.status(200).json({items})
     }catch(err){
+        return next(err)
+    }
+})
+
+/* 
+    Get item by ID
+    Accepts {id}
+
+    Returns {type, name, waigth, price, details, date}
+*/
+
+router.get('/:id' , async (req, res, next) => {
+    try{
+        const { id } = req.params;
+        const item = await Item.getItemById(id);
+
+        return res.status(200).json({item})
+    } catch(err) {
         return next(err)
     }
 })

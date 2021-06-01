@@ -23,7 +23,7 @@ router.post('/register', async (req, res, next) => {
         await Adresses.registerDefault(user.id, street_address, city, state, zip, lng, lat)
 
         const {token, refreshToken} = createToken(user.id, username, user.seller)
-        await Token.register(user.id, refreshToken)
+        // await Token.register(user.id, refreshToken)
         res.cookie('jwt', refreshToken, {sameSite: "strict", path: '/', httpOnly: true})
         return res.status(201).json({token, refreshToken})
     }catch(err) {
@@ -47,10 +47,10 @@ router.post('/login', async (req, res, next) => {
         let user = await User.authenticate(username, password)
         console.log(user)
         const {token, refreshToken} = createToken(user.id, username, user.seller)
-        const refToken = await Token.register(user.id, refreshToken)
-        if(!refToken) throw new ExpressError("Something went wrong", 404)
+        // const refToken = await Token.register(user.id, refreshToken)
+        // if(!refToken) throw new ExpressError("Something went wrong", 404)
         res.status(202).cookie('jwt', refreshToken, {sameSite: "strict", path: '/', httpOnly: true})
-        return res.json({token})
+        return res.json({token, logedIn: true})
     }catch(err) {
         return next(err)
     }
