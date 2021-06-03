@@ -15,7 +15,7 @@ class Orders {
 
     static async register(userId, itemId, quantity){
         const userExsists = User.getUser(userId);
-         console.log(userExsists)
+         
         if(!userExsists) throw new ExpressError("User does not exist", 404);
 
         const orderResult = await db.query(
@@ -45,6 +45,14 @@ class Orders {
         )
 
         const item = orderdItem.rows[0]
+        
+        await db.query(
+            `INSERT INTO buyer_seller
+            (order_id, item_id, buyer, seller)
+            VALUES
+            ($1, $2, $3, $4)`,
+            [order.id, item.id, order.user_id, item.user_id]
+        )
 
         if(item.quantity < 1) throw new ExpressError("Item quantity to low", 404)
         
@@ -73,6 +81,43 @@ class Orders {
 
         return result.rows[0]
     }
+
+/*
+    Get all buyer orders
+*/
+
+    static async getBuyOrders(id) {
+        const result = await db.query(
+            `SELECT o.id AS orderid, od.quantity AS o_quantity, o.order_date AS o_date, i.type, i.quantity,
+            i.name, i.price, i.date AS i_date 
+            FROM buyer_seller AS bs 
+            JOIN orders AS o ON o.id = bs.order_id 
+            JOIN order_details AS od ON o.id = od.order_id 
+            JOIN item AS i ON bs.item_id = i.id 
+            WHERE bs.buyer = $1;`,
+            [id]
+        )
+
+        return result.rows
+    }
+
+/* Get all Sell orders */
+
+    static async getSellOrders(id){
+                const result = await db.query(
+            `SELECT o.id AS orderid, od.quantity AS o_quantity, o.order_date AS o_date, i.type, i.quantity,
+            i.name, i.price, i.date AS i_date 
+            FROM buyer_seller AS bs 
+            JOIN orders AS o ON o.id = bs.order_id 
+            JOIN order_details AS od ON o.id = od.order_id 
+            JOIN item AS i ON bs.item_id = i.id 
+            WHERE bs.seller = $1;`,
+            [id]
+        )
+
+        return result.rows
+    }
+
 
 /*
     Delete an Order

@@ -19,6 +19,36 @@ router.post('/register', async (req, res, next) => {
     }
 })
 
+/* 
+    Get buyer orders 
+*/
+
+router.get('/buyorders/:id', async (req, res, next) => {
+    try{
+        const {id} = req.params;
+        const orders = await Order.getBuyOrders(id)
+
+        return res.status(200).json({orders})
+    } catch (err) {
+        return next(err)
+    }
+})
+
+/*
+    Get Sell orders
+*/
+
+router.get('/sellorders/:id', async (req, res, next) => {
+    try {
+        const {id} = req.params;
+        const orders = await Order.getSellOrders(id)
+
+        return res.status(200).json({orders})
+    } catch(err) {
+        return next(err)
+    }
+})
+
 /*
     Delete order
 */

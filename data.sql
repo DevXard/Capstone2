@@ -47,8 +47,6 @@ CREATE TABLE orders (
     order_date DATE DEFAULT CURRENT_DATE
 );
 
-
-
 CREATE TABLE item(
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users ON DELETE CASCADE,
@@ -58,6 +56,17 @@ CREATE TABLE item(
     price FLOAT,
     details TEXT,
     date DATE DEFAULT CURRENT_DATE
+);
+
+CREATE TABLE buyer_seller (
+    id SERIAL PRIMARY KEY,
+    order_id INTEGER REFERENCES orders ON DELETE CASCADE,
+    item_id INTEGER REFERENCES item ON DELETE CASCADE,
+    buyer INTEGER REFERENCES orders ON DELETE CASCADE,
+    seller INTEGER REFERENCES item ON DELETE CASCADE,
+    ordered BOOLEAN DEFAULT FALSE,
+    intransit BOOLEAN DEFAULT FALSE,
+    delivered BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE order_details (
