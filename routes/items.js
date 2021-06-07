@@ -58,6 +58,22 @@ router.get('/:id' , async (req, res, next) => {
     }
 })
 
+/* 
+    Get item by name or type 
+*/
+
+router.get('/name/:name' , async (req, res, next) => {
+    try{
+        const {name} = req.params;
+        let lName = name.toLocaleLowerCase()
+        const item = await Item.getByName(lName)
+
+        return res.status(200).json({item})
+    }catch(err){
+        return next(err)
+    }
+})
+
 /*
     Update exsisting item
 

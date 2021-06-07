@@ -39,6 +39,17 @@ class Item {
         return result.rows[0]
     }
 
+    static async getByName(name){
+        const result = await db.query(
+            `SELECT * 
+            FROM item
+            WHERE LOWER(type) LIKE $1 OR LOWER(name) LIKE $1`, 
+            [`%${name}%`]
+        )
+
+        return result.rows
+    }
+
     static async updateItem(comumns, id){
 
         const {query, values} = updataDatabase(
