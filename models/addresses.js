@@ -165,10 +165,11 @@ class Addresses {
 
         
         const result = await db.query(
-            `SELECT lng, lat 
-            FROM addresses 
-            JOIN users ON addresses.user_id = users.id 
-            WHERE users.seller = true AND addresses.default_address = true;`
+            `SELECT u.id AS uid, u.username, u.email, u.phone,
+            a.id AS aId, a.street_address, a.city, a.state, a.zip, a.lng, a.lat
+            FROM addresses AS a
+            JOIN users AS u ON a.user_id = u.id 
+            WHERE u.seller = true AND a.default_address = true;`
         )
 
         const addressList = result.rows

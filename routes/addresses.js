@@ -25,10 +25,11 @@ router.post('/register', async(req, res, next) => {
 /*
     Get all addresses in radius
 */
-router.get('/rad', async (req, res, next) => {
-    
+router.post('/rad', async (req, res, next) => {
+    console.log(req.body)
     try { 
         const {lng, lat, miles} = req.body;
+        
         const addresses = await Addresses.getAddressInRadius(lng, lat, miles)
 
         return res.status(200).json({addresses})

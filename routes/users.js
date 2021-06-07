@@ -44,6 +44,23 @@ router.patch('/update/:id', async (req, res, next) => {
     }
 })
 
+/* 
+    Get User By ID
+*/
+
+router.get('/useritems/:id', async (req, res, next) => {
+    
+    try{
+        const { id } = req.params;
+        
+        const user = await User.getUserById(id)
+
+        return res.status(200).json({user})
+    }catch(err){
+        return next(err);
+    }
+})
+
 /*
     Get user by username
 */

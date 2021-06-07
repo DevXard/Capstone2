@@ -56,6 +56,31 @@ class User {
         }
     }
 
+    static async getUserById(id) {
+
+        const userResult = await db.query(
+            `SELECT *
+            FROM users
+            WHERE id = $1`,
+            [id]
+        )
+
+        const itemsResult = await db.query(
+            `SELECT * 
+            FROM item
+            WHERE user_id = $1`,
+            [id]
+        )
+        let user = userResult.rows[0]
+
+        delete user.password
+
+        const result = {};
+        result.user = user
+        result.items = itemsResult.rows
+        return result
+    }
+
     static async getUser(username){
 
         const result = await db.query(
