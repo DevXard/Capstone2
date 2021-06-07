@@ -115,6 +115,26 @@ class Addresses {
     }
 
 /*
+    Get Item Addresses
+
+    Accepts {item ID}
+
+    Returns {{id, user_id, street_address, city, state, zip, lng, lat, default_address}}
+*/
+
+    static async getItemAddress(id){
+        const result = await db.query(
+            `SELECT a.lng, a.lat FROM item AS i 
+            JOIN users AS u ON i.user_id = u.id 
+            JOIN addresses AS a ON a.user_id = u.id 
+            WHERE i.id = $1 AND default_address = $2`,
+            [id, true]
+        )
+
+        return result.rows[0]
+    }
+
+/*
     Get address by ID
 
     Accepts {addresID}

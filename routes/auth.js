@@ -25,7 +25,7 @@ router.post('/register', async (req, res, next) => {
         const {token, refreshToken} = createToken(user.id, username, user.seller)
         // await Token.register(user.id, refreshToken)
         res.cookie('jwt', refreshToken, {sameSite: "strict", path: '/', httpOnly: true})
-        return res.status(201).json({token, refreshToken})
+        return res.status(201).json({token, logedIn: true})
     }catch(err) {
         next(err);
     }

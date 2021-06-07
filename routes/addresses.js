@@ -22,6 +22,9 @@ router.post('/register', async(req, res, next) => {
     }
 })
 
+/*
+    Get all addresses in radius
+*/
 router.get('/rad', async (req, res, next) => {
     
     try { 
@@ -49,6 +52,26 @@ router.get('/all/:id', async(req, res, next) => {
 
         return res.status(200).json({addresses})
     } catch(err) {
+        return next(err);
+    }
+})
+
+/*
+    Get address by Item id
+    This route shud return the addres of a user that have registerd an item
+
+    Accepts {itemID}
+    
+    Returns {{id, user_id, street_address, city, state, zip, lng, lat, default_address}}
+*/
+
+router.get('/item/:id', async (req, res, next) => {
+    try{
+        const {id} = req.params;
+        const addresses = await Addresses.getItemAddress(id);
+
+        return res.status(200).json({addresses})
+    }catch(err) {
         return next(err);
     }
 })
